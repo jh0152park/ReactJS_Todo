@@ -50,19 +50,30 @@ import { useForm } from "react-hook-form";
 //     passwordConfirm: string;
 // };
 
+interface IForm {
+    email: string;
+    firstName: string;
+    lastName: string;
+    userName: string;
+    password: string;
+    passwordConfirm: string;
+}
+
 function TodoList() {
     const {
         register,
         watch,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm<IForm>({
+        defaultValues: {
+            email: "...@naver.com",
+        },
+    });
 
-    const onValid = (data: any) => {
+    const onValid = (data: IForm) => {
         console.log(data);
     };
-
-    console.log(errors);
 
     return (
         <div>
