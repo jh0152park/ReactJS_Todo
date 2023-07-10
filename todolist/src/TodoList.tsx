@@ -1,159 +1,26 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-// function TodoList() {
-//     const [todo, setTodo] = useState("");
-//     const [todoError, setTodoError] = useState("");
-
-//     const onChange = (event: React.FormEvent<HTMLInputElement>) => {
-//         const {
-//             currentTarget: { value },
-//         } = event;
-//         setTodo(value);
-//     };
-
-//     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-//         event.preventDefault();
-
-//         if (todo.length < 10) {
-//             setTodoError("todo is have to be longer than 10");
-//         }
-//         console.log("submit");
-//     };
-
-//     return (
-//         <div>
-//             <form onSubmit={onSubmit}>
-//                 <input
-//                     onChange={onChange}
-//                     value={todo}
-//                     placeholder="Let me know what you gonna do."
-//                 ></input>
-//                 <button>Add</button>
-//                 {todoError !== "" ? todoError : null}
-//             </form>
-//         </div>
-//     );
-// }
-
-// type IFormData = {
-//     errors: {
-//         email: {
-//             message: string;
-//         };
-//     };
-//     firstName: string;
-//     lastName: string;
-//     userName: string;
-//     email: string;
-//     password: string;
-//     passwordConfirm: string;
-// };
-
 interface IForm {
-    email: string;
-    firstName: string;
-    lastName: string;
-    userName: string;
-    password: string;
-    passwordConfirm: string;
+    todo: string;
 }
 
 function TodoList() {
-    const {
-        register,
-        watch,
-        handleSubmit,
-        formState: { errors },
-        setError,
-    } = useForm<IForm>({
-        defaultValues: {
-            email: "...@naver.com",
-        },
-    });
+    const { register, handleSubmit, setValue } = useForm<IForm>();
 
-    const onValid = (data: IForm) => {
-        if (data.password !== data.passwordConfirm) {
-            setError(
-                "passwordConfirm",
-                { message: "Password are not same" },
-                { shouldFocus: true }
-            );
-        }
+    const onSubmit = (data: IForm) => {
+        console.log(data.todo);
+        setValue("todo", "");
     };
 
     return (
         <div>
-            <form
-                style={{ display: "flex", flexDirection: "column" }}
-                onSubmit={handleSubmit(onValid)}
-            >
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <input
-                    {...register("email", {
-                        required: "Email is required",
-                        pattern: {
-                            value: /^[A-Za-z0-9._%+-]+@naver.com$/,
-                            message: "Only @naver.com eamil allow",
-                        },
+                    {...register("todo", {
+                        required: "Please, let me know what you gonna do!",
                     })}
-                    placeholder="Email"
+                    placeholder="Let me know what you gonna do."
                 ></input>
-                <span>{errors?.email?.message as string}</span>
-
-                <input
-                    {...register("firstName", {
-                        required: "First Name is required",
-                        validate: (value: string) =>
-                            !value.includes("nico") ? "No nico allow" : true,
-                    })}
-                    placeholder="First Name"
-                ></input>
-                <span>{errors?.firstName?.message as string}</span>
-
-                <input
-                    {...register("lastName", {
-                        required: "Last Name is required",
-                    })}
-                    placeholder="Last Name"
-                ></input>
-                <span>{errors?.lastName?.message as string}</span>
-
-                <input
-                    {...register("userName", {
-                        required: "User Name is required",
-                        minLength: {
-                            value: 10,
-                            message: "User Name must be at least 10 characters",
-                        },
-                    })}
-                    placeholder="User Name"
-                ></input>
-                <span>{errors?.userName?.message as string}</span>
-
-                <input
-                    {...register("password", {
-                        required: "Password is required",
-                        minLength: {
-                            value: 10,
-                            message: "Password must be at least 10 characters",
-                        },
-                    })}
-                    placeholder="Password"
-                ></input>
-                <span>{errors?.password?.message as string}</span>
-
-                <input
-                    {...register("passwordConfirm", {
-                        required: "Password is required",
-                        minLength: {
-                            value: 10,
-                            message: "Password must be at least 10 characters",
-                        },
-                    })}
-                    placeholder="Password Confirm"
-                ></input>
-                <span>{errors?.passwordConfirm?.message as string}</span>
-
                 <button>Add</button>
             </form>
         </div>
