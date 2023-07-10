@@ -65,6 +65,7 @@ function TodoList() {
         watch,
         handleSubmit,
         formState: { errors },
+        setError,
     } = useForm<IForm>({
         defaultValues: {
             email: "...@naver.com",
@@ -72,7 +73,13 @@ function TodoList() {
     });
 
     const onValid = (data: IForm) => {
-        console.log(data);
+        if (data.password !== data.passwordConfirm) {
+            setError(
+                "passwordConfirm",
+                { message: "Password are not same" },
+                { shouldFocus: true }
+            );
+        }
     };
 
     return (
@@ -85,7 +92,7 @@ function TodoList() {
                     {...register("email", {
                         required: "Email is required",
                         pattern: {
-                            value: /^[A-Za-z0-9._%+-]+@NavigationPreloadManager.com$/,
+                            value: /^[A-Za-z0-9._%+-]+@naver.com$/,
                             message: "Only @naver.com eamil allow",
                         },
                     })}
@@ -96,6 +103,8 @@ function TodoList() {
                 <input
                     {...register("firstName", {
                         required: "First Name is required",
+                        validate: (value: string) =>
+                            !value.includes("nico") ? "No nico allow" : true,
                     })}
                     placeholder="First Name"
                 ></input>
