@@ -36,14 +36,33 @@ import { useForm } from "react-hook-form";
 //     );
 // }
 
+// type IFormData = {
+//     errors: {
+//         email: {
+//             message: string;
+//         };
+//     };
+//     firstName: string;
+//     lastName: string;
+//     userName: string;
+//     email: string;
+//     password: string;
+//     passwordConfirm: string;
+// };
+
 function TodoList() {
-    const { register, watch, handleSubmit, formState } = useForm();
+    const {
+        register,
+        watch,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
 
     const onValid = (data: any) => {
         console.log(data);
     };
 
-    console.log(formState.errors);
+    console.log(errors);
 
     return (
         <div>
@@ -52,32 +71,69 @@ function TodoList() {
                 onSubmit={handleSubmit(onValid)}
             >
                 <input
-                    {...register("email", { required: true })}
+                    {...register("email", {
+                        required: "Email is required",
+                        pattern: {
+                            value: /^[A-Za-z0-9._%+-]+@NavigationPreloadManager.com$/,
+                            message: "Only @naver.com eamil allow",
+                        },
+                    })}
                     placeholder="Email"
                 ></input>
+                <span>{errors?.email?.message as string}</span>
+
                 <input
-                    {...register("firstName", { required: true })}
+                    {...register("firstName", {
+                        required: "First Name is required",
+                    })}
                     placeholder="First Name"
                 ></input>
+                <span>{errors?.firstName?.message as string}</span>
+
                 <input
-                    {...register("lastName", { required: true })}
+                    {...register("lastName", {
+                        required: "Last Name is required",
+                    })}
                     placeholder="Last Name"
                 ></input>
+                <span>{errors?.lastName?.message as string}</span>
+
                 <input
-                    {...register("userName", { required: true, minLength: 10 })}
+                    {...register("userName", {
+                        required: "User Name is required",
+                        minLength: {
+                            value: 10,
+                            message: "User Name must be at least 10 characters",
+                        },
+                    })}
                     placeholder="User Name"
                 ></input>
+                <span>{errors?.userName?.message as string}</span>
+
                 <input
-                    {...register("password", { required: true, minLength: 10 })}
+                    {...register("password", {
+                        required: "Password is required",
+                        minLength: {
+                            value: 10,
+                            message: "Password must be at least 10 characters",
+                        },
+                    })}
                     placeholder="Password"
                 ></input>
+                <span>{errors?.password?.message as string}</span>
+
                 <input
                     {...register("passwordConfirm", {
-                        required: true,
-                        minLength: 10,
+                        required: "Password is required",
+                        minLength: {
+                            value: 10,
+                            message: "Password must be at least 10 characters",
+                        },
                     })}
                     placeholder="Password Confirm"
                 ></input>
+                <span>{errors?.passwordConfirm?.message as string}</span>
+
                 <button>Add</button>
             </form>
         </div>
