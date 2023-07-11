@@ -1,10 +1,10 @@
 import { useSetRecoilState } from "recoil";
-import { ITodo, todoState } from "../atoms";
+import { Categories, ITodo, todoState } from "../atoms";
 
 function Todo({ text, category, id }: ITodo) {
     const setTodo = useSetRecoilState(todoState);
 
-    const onClick = (ctg: ITodo["category"]) => {
+    const onClick = (ctg: Categories) => {
         setTodo((prev) => {
             const target = prev.findIndex((todo) => todo.id === id);
             const newTodo = { text, id, category: ctg as any };
@@ -24,14 +24,14 @@ function Todo({ text, category, id }: ITodo) {
     return (
         <li>
             <span>{text}</span>
-            {category !== "DOING" && (
-                <button onClick={() => onClick("DOING")}>Doing</button>
+            {category !== Categories.DOING && (
+                <button onClick={() => onClick(Categories.DOING)}>Doing</button>
             )}
-            {category !== "TO_DO" && (
-                <button onClick={() => onClick("TO_DO")}>To do</button>
+            {category !== Categories.TO_DO && (
+                <button onClick={() => onClick(Categories.TO_DO)}>To do</button>
             )}
-            {category !== "DONE" && (
-                <button onClick={() => onClick("DONE")}>Done</button>
+            {category !== Categories.DONE && (
+                <button onClick={() => onClick(Categories.DONE)}>Done</button>
             )}
         </li>
     );
