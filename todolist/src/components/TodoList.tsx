@@ -8,6 +8,7 @@ function TodoList() {
     // const setTodoList = useSetRecoilState(todoState);
     const todoList = useRecoilValue(todoState);
 
+    console.log(todoList);
     return (
         <div>
             <h1>Todo Lists</h1>
